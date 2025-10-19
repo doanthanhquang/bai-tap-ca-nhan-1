@@ -305,4 +305,45 @@ $(document).ready(function () {
   $(".animal-item").each(function () {
     attachAnimalDragEvents($(this));
   });
+
+  // ========== DRAG & DROP SIDEBAR ==========
+
+  let draggedNews = null;
+
+  // Expand/Collapse functionality
+  $(".expand-icon").on("click", function (e) {
+    e.stopPropagation();
+    const newsItem = $(this).closest(".news-item");
+    newsItem.toggleClass("expanded");
+
+    // Active when expanded
+    if (newsItem.hasClass("expanded")) {
+      newsItem.addClass("active");
+    } else {
+      newsItem.removeClass("active");
+    }
+  });
+
+  // Click on news header to expand and activate
+  $(".news-header").on("click", function (e) {
+    // Don't trigger if clicking on expand icon or drag handle
+    if (
+      $(e.target).hasClass("expand-icon") ||
+      $(e.target).hasClass("drag-handle")
+    ) {
+      return;
+    }
+
+    const newsItem = $(this).closest(".news-item");
+
+    // Toggle expanded state
+    newsItem.toggleClass("expanded");
+
+    // Active when expanded
+    if (newsItem.hasClass("expanded")) {
+      newsItem.addClass("active");
+    } else {
+      newsItem.removeClass("active");
+    }
+  });
 });
