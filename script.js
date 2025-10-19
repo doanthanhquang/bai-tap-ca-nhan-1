@@ -346,4 +346,96 @@ $(document).ready(function () {
       newsItem.removeClass("active");
     }
   });
+
+  // Drag functionality - only on drag handle
+  function attachNewsDragEvents(element) {
+    element.find(".drag-handle").on("mousedown", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      draggedNews = element;
+      draggedNews.addClass("dragging");
+
+      // Calculate offset from mouse to element's top-left corner
+      const elementOffset = draggedNews.offset();
+      const offsetX = e.pageX - elementOffset.left;
+      const offsetY = e.pageY - elementOffset.top;
+
+      // Create clone for visual feedback
+      const clone = draggedNews.clone();
+      clone.css({
+        position: "fixed",
+        left: e.clientX - offsetX,
+        top: e.clientY - offsetY,
+        width: draggedNews.width(),
+        zIndex: 1000,
+        opacity: 0.8,
+        pointerEvents: "none",
+      });
+      $("body").append(clone);
+
+      // Mouse move handler
+      $(document).on("mousemove.newsDrag", function (e) {
+        // Update clone position using the same offset
+        clone.css({
+          left: e.clientX - offsetX,
+          top: e.clientY - offsetY,
+        });
+
+        // Find element under cursor
+        const elementBelow = $(document.elementFromPoint(e.clientX, e.clientY));
+        const targetNews = elementBelow.closest(".news-item");
+
+        // Remove previous drag-over
+        $(".news-item").removeClass("drag-over");
+
+        // Add drag-over to valid target
+        if (targetNews.length && !targetNews.is(draggedNews)) {
+          targetNews.addClass("drag-over");
+        }
+      });
+
+      // Mouse up handler
+      $(document).on("mouseup.newsDrag", function (e) {
+        // Clean up
+        $(document).off("mousemove.newsDrag mouseup.newsDrag");
+        clone.remove();
+
+        if (draggedNews) {
+          draggedNews.removeClass("dragging");
+
+          // Find target element
+          const elementBelow = $(
+            document.elementFromPoint(e.clientX, e.clientY)
+          );
+          const targetNews = elementBelow.closest(".news-item");
+
+          // Perform reorder if valid target
+          if (targetNews.length && !targetNews.is(draggedNews)) {
+            const allNews = $(".sidebar .news-item");
+            const draggedIndex = allNews.index(draggedNews);
+            const targetIndex = allNews.index(targetNews);
+
+            if (draggedIndex < targetIndex) {
+              targetNews.after(draggedNews);
+            } else {
+              targetNews.before(draggedNews);
+            }
+
+            // Reattach events after reordering
+            attachNewsDragEvents(draggedNews);
+          }
+
+          // Remove drag-over class
+          $(".news-item").removeClass("drag-over");
+          draggedNews = null;
+        }
+      });
+    });
+  }
+
+  // Attach drag events to news items
+  $(".news-item").each(function () {
+    attachNewsDragEvents($(this));
+  });
 });
