@@ -130,4 +130,179 @@ $(document).ready(function () {
 
   // Initialize sample text preview
   updateSampleTextPreview();
+
+  // ========== DRAG & DROP FUNCTIONALITY (Animals) ==========
+
+  let draggedAnimal = null;
+  let placeholder = null;
+
+  // Add New button
+  $("#add-new-btn").click(function () {
+    const selectedOption = $("#animal-select option:selected");
+    const animalIcon = selectedOption.text();
+    const animalName = selectedOption.val();
+
+    // Create new animal item
+    const newAnimal = $(`
+          <div class="animal-item" data-animal="${animalName}">
+              <span class="animal-icon">${animalIcon}</span>
+              <span class="animal-name">${animalName}</span>
+          </div>
+      `);
+
+    // Append to drop zone
+    $("#drop-zone").append(newAnimal);
+
+    // Attach drag events to new item
+    attachAnimalDragEvents(newAnimal);
+  });
+  // Function to attach drag events to animal items
+  function attachAnimalDragEvents(element) {
+    element.on("mousedown", function (e) {
+      e.preventDefault();
+      draggedAnimal = $(this);
+
+      // Calculate offset from mouse to element's top-left corner
+      const elementOffset = draggedAnimal.offset();
+      const offsetX = e.pageX - elementOffset.left;
+      const offsetY = e.pageY - elementOffset.top;
+
+      let isDragging = false;
+      let clone = null;
+      const startX = e.pageX;
+      const startY = e.pageY;
+      const threshold = 2; // Minimum pixels to move before considering it a drag
+
+      // Mouse move handler
+      $(document).on("mousemove.animalDrag", function (e) {
+        const deltaX = Math.abs(e.pageX - startX);
+        const deltaY = Math.abs(e.pageY - startY);
+
+        // Only start dragging if moved beyond threshold
+        if (!isDragging && (deltaX > threshold || deltaY > threshold)) {
+          isDragging = true;
+          draggedAnimal.addClass("dragging");
+
+          // Create placeholder
+          placeholder = $('<div class="animal-placeholder"></div>');
+          placeholder.css({
+            width: draggedAnimal.outerWidth() + "px",
+            height: draggedAnimal.outerHeight() + "px",
+          });
+
+          // Insert placeholder at dragged item's position
+          draggedAnimal.after(placeholder);
+
+          // Create clone for visual feedback
+          clone = draggedAnimal.clone();
+          clone.removeClass("dragging").addClass("animal-clone");
+          clone.css({
+            position: "fixed",
+            left: e.clientX - offsetX,
+            top: e.clientY - offsetY,
+            width: draggedAnimal.width(),
+            zIndex: 1000,
+            opacity: 0.9,
+            pointerEvents: "none",
+          });
+          $("body").append(clone);
+        }
+
+        if (isDragging && clone) {
+          // Update clone position using the same offset
+          clone.css({
+            left: e.clientX - offsetX,
+            top: e.clientY - offsetY,
+          });
+
+          // Find element under cursor
+          const elementBelow = $(
+            document.elementFromPoint(e.clientX, e.clientY)
+          );
+          const dropZone = $("#drop-zone");
+          const dropZoneRect = dropZone[0].getBoundingClientRect();
+          const mouseY = e.clientY;
+          const mouseX = e.clientX;
+
+          // Always update placeholder position when in drop zone
+          const allAnimals = dropZone.children(".animal-item:not(.dragging)");
+
+          if (allAnimals.length === 0) {
+            // No other animals, just append placeholder
+            dropZone.append(placeholder);
+          } else {
+            let insertBefore = null;
+            let minDistance = Infinity;
+
+            // Find the closest animal based on position
+            allAnimals.each(function () {
+              const rect = this.getBoundingClientRect();
+              const itemCenterX = rect.left + rect.width / 2;
+              const itemCenterY = rect.top + rect.height / 2;
+
+              // Calculate distance from mouse to item center
+              const distance = Math.sqrt(
+                Math.pow(mouseX - itemCenterX, 2) +
+                  Math.pow(mouseY - itemCenterY, 2)
+              );
+
+              // Check if mouse is before this item (reading order: left to right, top to bottom)
+              const isAbove = mouseY < itemCenterY;
+              const isSameRow =
+                Math.abs(mouseY - itemCenterY) < rect.height / 2;
+              const isLeft = mouseX < itemCenterX;
+
+              if (isAbove || (isSameRow && isLeft)) {
+                if (distance < minDistance) {
+                  minDistance = distance;
+                  insertBefore = $(this);
+                }
+              }
+            });
+
+            // Move placeholder to the calculated position
+            if (insertBefore && insertBefore.length > 0) {
+              // Check if placeholder is already in the right position
+              if (insertBefore.prev()[0] !== placeholder[0]) {
+                insertBefore.before(placeholder);
+              }
+            } else {
+              // Insert at the end if not before any item
+              if (dropZone.children().last()[0] !== placeholder[0]) {
+                dropZone.append(placeholder);
+              }
+            }
+          }
+        }
+      });
+
+      // Mouse up handler
+      $(document).on("mouseup.animalDrag", function (e) {
+        // Clean up
+        $(document).off("mousemove.animalDrag mouseup.animalDrag");
+
+        if (isDragging) {
+          if (clone) {
+            clone.remove();
+          }
+
+          if (draggedAnimal && placeholder) {
+            // Move dragged item to placeholder position
+            placeholder.before(draggedAnimal);
+            placeholder.remove();
+            draggedAnimal.removeClass("dragging");
+
+            placeholder = null;
+          }
+        }
+
+        draggedAnimal = null;
+      });
+    });
+  }
+
+  // Attach drag events to initial animal items
+  $(".animal-item").each(function () {
+    attachAnimalDragEvents($(this));
+  });
 });
