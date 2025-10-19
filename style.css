@@ -530,4 +530,27 @@ body {
         flex-direction: column;
         padding-top: 0;
     }
+ 
+    .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 2px solid #ddd;
+    }
+    
+    .drop-zone {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+    
+    .nav-menu {
+        flex-wrap: wrap;
+    }
+    
+    .controls {
+        width: 100%;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }
