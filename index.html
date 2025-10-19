@@ -88,6 +88,63 @@
             </div>
           </div>
         </aside>
+
+        <!-- Main Content Area -->
+        <main class="content">
+          <!-- Process Text Section -->
+          <section class="process-text">
+            <div class="section-header">
+              <h2>Process Text</h2>
+              <div class="controls">
+                <input
+                  type="text"
+                  id="pattern-input"
+                  placeholder="a[a-z]"
+                  class="pattern-input"
+                />
+                <button id="highlight-btn" class="btn">Highlight</button>
+                <button id="delete-btn" class="btn">Delete</button>
+                <button id="reset-btn" class="btn">Reset</button>
+              </div>
+              <div class="controls">
+                <span id="sample-text-display" class="sample-text-display"
+                  >SampleText</span
+                >
+                <input
+                  type="color"
+                  id="text-color"
+                  value="#ff0000"
+                  class="color-picker"
+                  title="Text Color"
+                />
+                <div class="settings-wrapper">
+                  <button id="settings-btn" class="btn btn-settings">⚙️</button>
+                  <!-- Style Modal -->
+                  <div id="style-modal" class="modal">
+                    <div class="modal-content">
+                      <div class="modal-header">Style Settings</div>
+                      <label
+                        ><input type="checkbox" id="bold-check" /> Bold</label
+                      ><br />
+                      <label
+                        ><input type="checkbox" id="italic-check" />
+                        Italic</label
+                      ><br />
+                      <label
+                        ><input type="checkbox" id="underline-check" />
+                        Underline</label
+                      ><br />
+                      <label>
+                        Background
+                        <input type="color" id="bg-color" value="#ffff00" />
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
       </div>
     </div>
   </body>
