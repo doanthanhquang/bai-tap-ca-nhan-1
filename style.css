@@ -281,3 +281,97 @@ body {
     font-size: 18px;
     padding: 6px 12px;
 }
+
+.settings-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.btn-add {
+    background: linear-gradient(to bottom, #81c784 0%, #66bb6a 100%);
+    color: white;
+}
+
+.text-content {
+    padding: 20px;
+    line-height: 1.8;
+    font-size: 14px;
+    color: #424242;
+    min-height: 200px;
+    background: white;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.highlight {
+    background-color: yellow;
+    font-weight: normal;
+}
+
+.highlight.bold {
+    font-weight: bold;
+}
+
+.highlight.italic {
+    font-style: italic;
+}
+
+.highlight.underline {
+    text-decoration: underline;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: absolute;
+    top: calc(100% + 5px);
+    right: 0;
+    z-index: 9999;
+    background: white;
+    border: 3px solid #5e35b1;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    min-width: 280px;
+}
+
+.modal.show {
+    display: block;
+}
+
+.modal-header {
+    background: linear-gradient(to right, #ffd54f 0%, #ffb300 100%);
+    padding: 10px;
+    margin: -20px -20px 15px -20px;
+    font-weight: bold;
+    border-radius: 5px 5px 0 0;
+    border: 2px solid #ff6f00;
+}
+
+.modal-content label {
+    display: block;
+    margin: 10px 0;
+    font-weight: 500;
+}
+
+.modal-content input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.modal-content input[type="color"] {
+    margin-left: 10px;
+    cursor: pointer;
+    border: none;
+    height: 30px;
+    width: 60px;
+}
+
+.color-picker {
+    cursor: pointer;
+    border: 2px solid #9fa8da;
+    border-radius: 4px;
+    height: 34px;
+    width: 50px;
+    padding: 2px;
+    background: white;
+}
