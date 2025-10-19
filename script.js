@@ -105,4 +105,13 @@ $(document).ready(function () {
     currentHighlightStyle.bold = $(this).is(":checked");
     updateSampleTextPreview();
   });
+  $("#italic-check").change(function () {
+    currentHighlightStyle.italic = $(this).is(":checked");
+    updateSampleTextPreview();
+  });
+
+  $("#underline-check").change(function () {
+    currentHighlightStyle.underline = $(this).is(":checked");
+    updateSampleTextPreview();
+  });
 });
