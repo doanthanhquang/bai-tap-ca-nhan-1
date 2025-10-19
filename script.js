@@ -441,4 +441,51 @@ $(document).ready(function () {
 
   // Set first news item as active by default
   $(".news-item").first().addClass("active expanded");
+
+  // ========== NAVIGATION MENU SYNC ==========
+
+  // Sync navigation and footer menu states
+  $(".nav-link, .footer-link").click(function (e) {
+    e.preventDefault();
+    const menuText = $(this).text().trim();
+
+    // Remove active from all
+    $(".nav-link, .footer-link").removeClass("active");
+
+    // Add active to matching items
+    $(".nav-link, .footer-link").each(function () {
+      if ($(this).text().trim() === menuText) {
+        $(this).addClass("active");
+      }
+    });
+  });
+
+  // Hover sync for menu items
+  $(".nav-link").hover(
+    function () {
+      const menuText = $(this).text().trim();
+      $(".footer-link").each(function () {
+        if ($(this).text().trim() === menuText) {
+          $(this).addClass("hover");
+        }
+      });
+    },
+    function () {
+      $(".footer-link").removeClass("hover");
+    }
+  );
+
+  $(".footer-link").hover(
+    function () {
+      const menuText = $(this).text().trim();
+      $(".nav-link").each(function () {
+        if ($(this).text().trim() === menuText) {
+          $(this).addClass("hover");
+        }
+      });
+    },
+    function () {
+      $(".nav-link").removeClass("hover");
+    }
+  );
 });
