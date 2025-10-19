@@ -438,4 +438,7 @@ $(document).ready(function () {
   $(".news-item").each(function () {
     attachNewsDragEvents($(this));
   });
+
+  // Set first news item as active by default
+  $(".news-item").first().addClass("active expanded");
 });
