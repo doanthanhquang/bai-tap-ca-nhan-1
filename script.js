@@ -76,4 +76,16 @@ $(document).ready(function () {
     $("#text-content").html(originalText);
     $("#pattern-input").val("");
   });
+
+  $("#settings-btn").click(function (e) {
+    e.stopPropagation();
+    $("#style-modal").toggleClass("show");
+  });
+
+  // Close modal when clicking outside
+  $(document).click(function (event) {
+    if (!$(event.target).closest(".settings-wrapper").length) {
+      $("#style-modal").removeClass("show");
+    }
+  });
 });
