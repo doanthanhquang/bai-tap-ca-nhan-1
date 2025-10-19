@@ -70,4 +70,10 @@ $(document).ready(function () {
 
     $("#text-content").html(content);
   });
+
+  // Reset button
+  $("#reset-btn").click(function () {
+    $("#text-content").html(originalText);
+    $("#pattern-input").val("");
+  });
 });
