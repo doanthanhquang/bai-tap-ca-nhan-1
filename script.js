@@ -88,4 +88,21 @@ $(document).ready(function () {
       $("#style-modal").removeClass("show");
     }
   });
+  // Function to update sample text preview
+  function updateSampleTextPreview() {
+    const styles = {
+      "font-weight": currentHighlightStyle.bold ? "bold" : "normal",
+      "font-style": currentHighlightStyle.italic ? "italic" : "normal",
+      "text-decoration": currentHighlightStyle.underline ? "underline" : "none",
+      "background-color": currentHighlightStyle.bgColor,
+      color: currentHighlightStyle.textColor,
+    };
+
+    // Apply to main display
+    $("#sample-text-display").css(styles);
+  }
+  $("#bold-check").change(function () {
+    currentHighlightStyle.bold = $(this).is(":checked");
+    updateSampleTextPreview();
+  });
 });
