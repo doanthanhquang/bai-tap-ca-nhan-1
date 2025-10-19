@@ -88,6 +88,7 @@ $(document).ready(function () {
       $("#style-modal").removeClass("show");
     }
   });
+
   // Function to update sample text preview
   function updateSampleTextPreview() {
     const styles = {
@@ -101,10 +102,12 @@ $(document).ready(function () {
     // Apply to main display
     $("#sample-text-display").css(styles);
   }
+
   $("#bold-check").change(function () {
     currentHighlightStyle.bold = $(this).is(":checked");
     updateSampleTextPreview();
   });
+
   $("#italic-check").change(function () {
     currentHighlightStyle.italic = $(this).is(":checked");
     updateSampleTextPreview();
@@ -114,4 +117,17 @@ $(document).ready(function () {
     currentHighlightStyle.underline = $(this).is(":checked");
     updateSampleTextPreview();
   });
+
+  $("#bg-color").on("input change", function () {
+    currentHighlightStyle.bgColor = $(this).val();
+    updateSampleTextPreview();
+  });
+
+  $("#text-color").on("input change", function () {
+    currentHighlightStyle.textColor = $(this).val();
+    updateSampleTextPreview();
+  });
+
+  // Initialize sample text preview
+  updateSampleTextPreview();
 });
