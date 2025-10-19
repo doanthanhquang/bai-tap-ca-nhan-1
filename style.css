@@ -323,9 +323,7 @@ body {
 /* Modal */
 .modal {
     display: none;
-    position: absolute;
-    top: calc(100% + 5px);
-    right: 0;
+    position: fixed;
     z-index: 9999;
     background: white;
     border: 3px solid #5e35b1;

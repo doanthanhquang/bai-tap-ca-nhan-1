@@ -79,7 +79,22 @@ $(document).ready(function () {
 
   $("#settings-btn").click(function (e) {
     e.stopPropagation();
-    $("#style-modal").toggleClass("show");
+    const modal = $("#style-modal");
+    
+    if (modal.hasClass("show")) {
+      modal.removeClass("show");
+    } else {
+      // Get button position
+      const buttonRect = this.getBoundingClientRect();
+      
+      // Position modal below the button
+      modal.css({
+        top: (buttonRect.bottom + 5) + "px",
+        left: (buttonRect.right - 280) + "px" // Align right edge with button
+      });
+      
+      modal.addClass("show");
+    }
   });
 
   // Close modal when clicking outside
